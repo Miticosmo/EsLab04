@@ -36,16 +36,17 @@ public class CorsoDAO {
 
 				System.out.println(codins + " " + numeroCrediti + " " + nome + " " + periodoDidattico);
 
-				// Crea un nuovo JAVA Bean Corso
-				// Aggiungi il nuovo oggetto Corso alla lista corsi
-			}
+				corsi.add(new Corso(codins,numeroCrediti,nome,periodoDidattico));
 
-			return corsi;
 
+			} 
 		} catch (SQLException e) {
 			// e.printStackTrace();
 			throw new RuntimeException("Errore Db", e);
 		}
+		
+		return corsi;
+
 	}
 
 	/*
@@ -70,4 +71,5 @@ public class CorsoDAO {
 		// ritorna true se l'iscrizione e' avvenuta con successo
 		return false;
 	}
+
 }
