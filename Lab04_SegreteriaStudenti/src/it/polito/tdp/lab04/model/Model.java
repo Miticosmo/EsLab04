@@ -22,4 +22,12 @@ public class Model {
 		return sDAO.getStudenteByMatr(matricola);
 	}
 	
+	public List<Studente> cercaCorso(Corso c)
+	{
+		
+		return cDAO.getStudentiIscrittiAlCorso(c);
+		
+	}
+	
+	
 }

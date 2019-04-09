@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,14 +60,46 @@ public class CorsoDAO {
 	/*
 	 * Ottengo tutti gli studenti iscritti al Corso
 	 */
-	public void getStudentiIscrittiAlCorso(Corso corso) {
-		// TODO
+	public List<Studente> getStudentiIscrittiAlCorso(Corso corso) {
+		
+		List<Studente> iscritti = new ArrayList<Studente>();
+		
+		String codIns = corso.getCodins();
+		
+		final String sql = "select * from studente\n " + 
+				"where matricola IN(select matricola from iscritticorsi.iscrizione\n " + 
+				"where codins = ? )";
+		
+		try {
+
+			Connection conn = ConnectDB.getConnection();
+
+			PreparedStatement st = conn.prepareStatement(sql);
+
+			st.setString(1, codIns);
+			
+			ResultSet rs = st.executeQuery();
+			
+			while(rs.next())
+			{
+			
+				iscritti.add(new Studente(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+			}
+			
+		} catch (Exception e) {
+			System.err.println("\"Errore di connessione al db\"");
+			return null;
+		}
+		
+		
+		
+		return iscritti;
 	}
 
 	/*
 	 * Data una matricola ed il codice insegnamento, iscrivi lo studente al corso.
 	 */
-	public boolean inscriviStudenteACorso(Studente studente, Corso corso) {
+	public boolean iscriviStudenteACorso(Studente studente, Corso corso) {
 		// TODO
 		// ritorna true se l'iscrizione e' avvenuta con successo
 		return false;

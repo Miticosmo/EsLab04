@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 public class SegreteriaStudentiController {
 
 	private Model model;
+	private List<Corso> corsi;
 
 	@FXML // ResourceBundle that was given to the FXMLLoader
 	private ResourceBundle resources;
@@ -77,11 +78,36 @@ public class SegreteriaStudentiController {
 
 	@FXML
 	void doCercaCorsi(ActionEvent event) {
-
+		
 	}
 
 	@FXML
 	void doCercaIscritiCorso(ActionEvent event) {
+		
+		txtLog.clear();
+		String corsoSel = menuTendCorsi.getValue();
+		if(corsoSel=="")
+		{
+			txtLog.setText("Selezionare una tipologia di corso tra quelle disponibili");
+			return;
+		}
+		List<Studente> studenti=null;
+		corsi = model.getCorsi();
+		for (Corso c : corsi)
+		{
+			if(corsoSel.equals(c.getNome())) {
+				studenti = model.cercaCorso(c);
+			}
+		}
+		
+		txtLog.appendText("Studenti iscritti al corso di " + corsoSel + ": \n");
+		int pos = 1;
+		for(Studente s : studenti)
+		{
+			txtLog.appendText(pos + ". Nome = " + s.getNome() + " Cognome = " + s.getCognome() + " Matr." + s.getMatricola() + "\n");
+			pos++;
+		}
+
 
 	}
 
@@ -122,10 +148,11 @@ public class SegreteriaStudentiController {
 		// Come popolare un ComboBox
 		menuTendCorsi.getItems().removeAll(menuTendCorsi.getItems());
 
-		List<Corso> corsi = model.getCorsi();
-
+		corsi = model.getCorsi();
+		menuTendCorsi.getItems().add("");
 		for (Corso c : corsi) {
 			menuTendCorsi.getItems().add(c.getNome());
 		}
+		
 	}
 }
