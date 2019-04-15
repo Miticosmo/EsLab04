@@ -28,6 +28,10 @@ public class Model {
 		return cDAO.getStudentiIscrittiAlCorso(c);
 		
 	}
-	
+
+	public boolean getStudeteIscrittoAcorso(int matricola, String corsoSel) {
+		
+		return cDAO.getStudenteIscrittoAcorsoDAO(matricola, corsoSel);
+	}
 	
 }

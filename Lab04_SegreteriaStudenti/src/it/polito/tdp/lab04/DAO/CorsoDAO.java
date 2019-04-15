@@ -105,4 +105,35 @@ public class CorsoDAO {
 		return false;
 	}
 
-}
+	public boolean getStudenteIscrittoAcorsoDAO(int matricola, String corsoSel) {
+		
+		boolean isPresent = false;
+		final String sql = "SELECT * FROM iscrizione\n" + 
+				" where matricola = ? AND codins = \n" + 
+				"(SELECT codins from corso\n" + 
+				" where nome = ? )";
+		
+		try {
+			
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+
+			st.setInt(1, matricola);
+			st.setString(2, corsoSel);
+			ResultSet rs = st.executeQuery();
+
+			if (rs.next()) 
+			{
+				isPresent = true ;
+			} 
+			
+		} catch (Exception e) {
+				System.err.println("\"Errore di connessione al db\"");
+				return false;
+		}
+		
+		return isPresent;
+	
+	}
+		
+	}

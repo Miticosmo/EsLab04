@@ -18,6 +18,14 @@ public class Corso {
 	public String getCodins() {
 		return codins;
 	}
+	
+	public String getCodins(String nome)
+	{
+		if(this.nome == nome)
+			return this.getCodins();
+		else
+			return null;
+	}
 
 	public void setCodins(String codins) {
 		this.codins = codins;

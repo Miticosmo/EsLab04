@@ -41,36 +41,31 @@ public class SegreteriaStudentiController {
 
 	@FXML // fx:id="txtLog"
 	private TextArea txtLog; // Value injected by FXMLLoader
-	
+
 	@FXML
-    void doAutocompletamento(ActionEvent event) {
-		
+	void doAutocompletamento(ActionEvent event) {
+
 		try {
 			txtNome.clear();
 			txtCognome.clear();
-			
+
 			int matricola = Integer.parseInt(txtMatricola.getText());
-			
+
 			Studente s = model.getStudente(matricola);
-			if(s != null)
-			{
+			if (s != null) {
 				txtLog.clear();
 				txtNome.setText(s.getNome());
 				txtCognome.setText(s.getCognome());
-			}
-			else {
+			} else {
 				txtLog.setText("Studente non trovato!");
 			}
-			
-			
-			
+
 		} catch (NumberFormatException e) {
 			txtLog.setText("Formato errato. La matricola è formata da 6 numeri interi");
 			return;
 		}
-		
-		
-    }
+
+	}
 
 	public SegreteriaStudentiController() {
 
@@ -78,36 +73,72 @@ public class SegreteriaStudentiController {
 
 	@FXML
 	void doCercaCorsi(ActionEvent event) {
-		
+
+		txtLog.clear();
+		// Recupero info corsi e matricola
+		String corsoSel = menuTendCorsi.getValue();
+
+		try {
+			
+			System.out.println(corsoSel);
+			int matricola = Integer.parseInt(txtMatricola.getText());
+			// Caso non seleziona il corso
+			if (corsoSel == "") {
+				txtLog.setText("E'obbligatorio selezionare un corso ed inserire la matricola in un formato valido");
+				return;
+			}
+			
+			boolean isPresent = model.getStudeteIscrittoAcorso(matricola, corsoSel);
+			
+			if (isPresent)
+			{
+				txtLog.setText("Studente iscritto al corso selezionato!");
+				return;
+			}
+			else
+			{
+				txtLog.setText("Studente non iscritto al corso selezionato!");
+			}
+			return;
+			
+			
+			
+		} catch (NumberFormatException e) {
+
+			txtLog.appendText("Formato matricola non valido. Inserire una matricola formata da 6 cifre \n");
+			if(corsoSel=="" || corsoSel== null)
+				txtLog.appendText("E'obbligatorio selezionare un corso dal menu a tendina");			
+			System.err.println(e);
+			return;
+
+		}
+
 	}
 
 	@FXML
 	void doCercaIscritiCorso(ActionEvent event) {
-		
+
 		txtLog.clear();
 		String corsoSel = menuTendCorsi.getValue();
-		if(corsoSel=="")
-		{
+		if (corsoSel == "") {
 			txtLog.setText("Selezionare una tipologia di corso tra quelle disponibili");
 			return;
 		}
-		List<Studente> studenti=null;
+		List<Studente> studenti = null;
 		corsi = model.getCorsi();
-		for (Corso c : corsi)
-		{
-			if(corsoSel.equals(c.getNome())) {
+		for (Corso c : corsi) {
+			if (corsoSel.equals(c.getNome())) {
 				studenti = model.cercaCorso(c);
 			}
 		}
-		
+
 		txtLog.appendText("Studenti iscritti al corso di " + corsoSel + ": \n");
 		int pos = 1;
-		for(Studente s : studenti)
-		{
-			txtLog.appendText(pos + ". Nome = " + s.getNome() + " Cognome = " + s.getCognome() + " Matr." + s.getMatricola() + "\n");
+		for (Studente s : studenti) {
+			txtLog.appendText(pos + ". Nome = " + s.getNome() + " Cognome = " + s.getCognome() + " Matr."
+					+ s.getMatricola() + "\n");
 			pos++;
 		}
-
 
 	}
 
@@ -153,6 +184,6 @@ public class SegreteriaStudentiController {
 		for (Corso c : corsi) {
 			menuTendCorsi.getItems().add(c.getNome());
 		}
-		
+
 	}
 }
