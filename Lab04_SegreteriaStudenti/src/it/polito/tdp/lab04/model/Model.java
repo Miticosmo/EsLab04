@@ -22,7 +22,7 @@ public class Model {
 		return sDAO.getStudenteByMatr(matricola);
 	}
 	
-	public List<Studente> cercaCorso(Corso c)
+	public List<Studente> cercaCorso(Corso c) 
 	{
 		
 		return cDAO.getStudentiIscrittiAlCorso(c);
@@ -33,5 +33,11 @@ public class Model {
 		
 		return cDAO.getStudenteIscrittoAcorsoDAO(matricola, corsoSel);
 	}
+
+	public boolean iscriviStudenteAcorso(Studente studente, Corso corso) {
+		return cDAO.iscriviStudenteACorso(studente, corso);
+	}
+	
+	
 	
 }

@@ -100,9 +100,37 @@ public class CorsoDAO {
 	 * Data una matricola ed il codice insegnamento, iscrivi lo studente al corso.
 	 */
 	public boolean iscriviStudenteACorso(Studente studente, Corso corso) {
-		// TODO
-		// ritorna true se l'iscrizione e' avvenuta con successo
-		return false;
+		boolean iscritto = false ;
+		final String sql = "INSERT INTO studente\n" + 
+				" value ( ? , ? , ? ,'01KSUPG' )";
+		Connection conn = ConnectDB.getConnection();
+		
+		try {
+			
+			PreparedStatement st = conn.prepareStatement(sql);
+			
+			st.setInt(1, studente.getMatricola());
+			st.setString(2, studente.getCognome().toUpperCase());
+			st.setString(3, studente.getNome().toUpperCase());
+			//st.setString(4, corso.getNome());
+			
+			int ris = st.executeUpdate(sql);
+			
+			if(ris == 1)
+				iscritto = true;
+			
+			conn.close();
+			
+			System.out.println("Query eseguita coorettamente " + iscritto);
+			
+		} catch (SQLException e) {
+			System.err.println("\"Errore di connessione al db\"");
+			e.printStackTrace();
+			return false;
+		}
+		
+		return iscritto;
+		
 	}
 
 	public boolean getStudenteIscrittoAcorsoDAO(int matricola, String corsoSel) {

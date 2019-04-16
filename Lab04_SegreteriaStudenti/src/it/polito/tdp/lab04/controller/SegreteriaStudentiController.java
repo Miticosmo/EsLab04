@@ -149,6 +149,55 @@ public class SegreteriaStudentiController {
 
 	@FXML
 	void doIscriviStudente(ActionEvent event) {
+		txtLog.clear();
+		// Recupero i campi MATR NOME COGNOME E IL CODICE DEL CORSO
+		
+		try {
+			
+		
+		int matricola = Integer.parseInt(txtMatricola.getText());
+		String nome = txtNome.getText();
+		String cognome = txtCognome.getText();
+		String nomeCorso = menuTendCorsi.getValue();
+		
+		if(matricola != 6)
+		{
+			txtLog.appendText("Lunghezza formato matricola errato. Inserisci una matricola composta da 6 cifre\n");
+			
+		}
+		
+		if( nome == null || cognome == null )
+		{
+			txtLog.appendText("Nome e/o Cognome Obbligatori!\n");
+			return;
+		}
+		
+		System.out.println(matricola + nome + cognome + nomeCorso);
+			
+		
+		boolean iscritto = model.iscriviStudenteAcorso(new Studente(matricola, cognome, nome, "") , new Corso("", 0 , nomeCorso, 0));
+		
+		if(iscritto)
+		{
+			txtLog.setText("Iscrizione effettuata con successo!\n");
+			txtLog.appendText("Riepilogo:\n");
+			txtLog.appendText( nome + " " + cognome + " " + "matricola:"+ matricola + " " + " Iscr.Corso:" + nomeCorso );
+			
+		}
+		else
+		{
+			txtLog.setText("Lo studente è già iscritto a questo corso");
+		}
+		} catch (NumberFormatException e) {
+			txtLog.appendText("Errore");
+			return;
+		}
+		
+		return ; 
+		
+		
+		
+		
 
 	}
 
